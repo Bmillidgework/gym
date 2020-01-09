@@ -92,7 +92,7 @@ register(
 )
 
 register(
-    id='CartpoleSwingUp-v0',
+    id='CartPoleSwingUp-v0',
     entry_point='gym.envs.classic_control:CartPoleSwingUpEnv',
     reward_threshold=100.0,
     max_episode_steps=200,
