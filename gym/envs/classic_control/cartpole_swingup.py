@@ -95,6 +95,7 @@ class CartPoleSwingUpEnv(gym.Env):
             reward = reward_theta*reward_x
         if self.sparse_reward == True:
             if theta > -self.sparse_theta_threshold and theta < self.sparse_theta_threshold:
+                print("reward obtained!!!")
                 reward =1
             else:
                 reward = 0
