@@ -21,7 +21,7 @@ class CartPoleSwingUpEnv(gym.Env):
         'video.frames_per_second' : 50
     }
 
-    def __init__(self):
+    def __init__(self,sparse_reward=True):
         self.g = 9.82  # gravity
         self.m_c = 0.5  # cart mass
         self.m_p = 0.5  # pendulum mass
@@ -38,6 +38,9 @@ class CartPoleSwingUpEnv(gym.Env):
         # Angle at which to fail the episode
         self.theta_threshold_radians = 12 * 2 * math.pi / 360
         self.x_threshold = 2.4
+        
+        self.sparse_theta_threshold = 1
+        self.sparse_reward = sparse_reward
 
         high = np.array([
             np.finfo(np.float32).max,
@@ -86,11 +89,16 @@ class CartPoleSwingUpEnv(gym.Env):
         if self.t >= self.t_limit:
           done = True
 
-        reward_theta = (np.cos(theta)+1.0)/2.0
-        reward_x = np.cos((x/self.x_threshold)*(np.pi/2.0))
-
-        reward = reward_theta*reward_x
-
+        if self.sparse_reward == False:
+            reward_theta = (np.cos(theta)+1.0)/2.0
+            reward_x = np.cos((x/self.x_threshold)*(np.pi/2.0))
+            reward = reward_theta*reward_x
+        if self.sparse_reward == True:
+            if theta > -self.sparse_theta_threshold and theta < self.sparse_theta_threshold:
+                reward =1
+            else:
+                reward = 0
+              
         obs = np.array([x,x_dot,np.cos(theta),np.sin(theta),theta_dot])
 
         return obs, reward, done, {}
