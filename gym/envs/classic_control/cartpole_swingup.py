@@ -87,9 +87,9 @@ class CartPoleSwingUpEnv(gym.Env):
         if  x < -self.x_threshold or x > self.x_threshold:
             if self.stop_at_edge:
                 if x < 0:
-                    self.state = (-self.x_threshold, 0, theta, thetadot)
+                    self.state = (-self.x_threshold, 0, theta, theta_dot)
                 if x > 0:
-                    self.state = (self.x_threshold, 0, theta, thetadot)
+                    self.state = (self.x_threshold, 0, theta, theta_dot)
             else:
                 done = True
         if self.penalize_edge_threshold==True:
