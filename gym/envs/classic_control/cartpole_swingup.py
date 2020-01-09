@@ -66,7 +66,6 @@ class CartPoleSwingUpEnv(gym.Env):
         action *= self.force_mag
 
         state = self.state
-        print("inside step, state: ", state)
         x, x_dot, theta, theta_dot = state
 
         s = math.sin(theta)
@@ -96,7 +95,6 @@ class CartPoleSwingUpEnv(gym.Env):
             reward = reward_theta*reward_x
         if self.sparse_reward == True:
             if theta > -self.sparse_theta_threshold and theta < self.sparse_theta_threshold:
-                print("reward obtained!!!")
                 reward =1
             else:
                 reward = 0
