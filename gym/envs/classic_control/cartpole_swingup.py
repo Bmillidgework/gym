@@ -66,6 +66,7 @@ class CartPoleSwingUpEnv(gym.Env):
         action *= self.force_mag
 
         state = self.state
+        print("inside step, state: ", state)
         x, x_dot, theta, theta_dot = state
 
         s = math.sin(theta)
