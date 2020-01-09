@@ -28,7 +28,7 @@ class Continuous_MountainCarEnv(gym.Env):
         'video.frames_per_second': 30
     }
 
-    def __init__(self, goal_velocity = 0):
+    def __init__(self, goal_velocity = 0, no_penalty=True):
         self.min_action = -1.0
         self.max_action = 1.0
         self.min_position = -1.2
@@ -37,6 +37,7 @@ class Continuous_MountainCarEnv(gym.Env):
         self.goal_position = 0.45 # was 0.5 in gym, 0.45 in Arnaud de Broissia's version
         self.goal_velocity = goal_velocity
         self.power = 0.0015
+        self.no_penalty = no_penalty
 
         self.low_state = np.array([self.min_position, -self.max_speed])
         self.high_state = np.array([self.max_position, self.max_speed])
@@ -74,7 +75,8 @@ class Continuous_MountainCarEnv(gym.Env):
         reward = 0
         if done:
             reward = 100.0
-        reward-= math.pow(action[0],2)*0.1
+        if not self.no_penalty:
+            reward-= math.pow(action[0],2)*0.1
 
         self.state = np.array([position, velocity])
         return self.state, reward, done, {}
