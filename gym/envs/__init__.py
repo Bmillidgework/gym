@@ -95,7 +95,7 @@ register(
     id='CartPoleSwingUp-v0',
     entry_point='gym.envs.classic_control:CartPoleSwingUpEnv',
     reward_threshold=100.0,
-    max_episode_steps=200,
+    max_episode_steps=200000,
 )
 
 # Box2d
