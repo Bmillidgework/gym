@@ -21,7 +21,7 @@ class CartPoleSwingUpEnv(gym.Env):
         'video.frames_per_second' : 50
     }
 
-    def __init__(self,sparse_reward=True,penalize_edge_threshold=False):
+    def __init__(self,sparse_reward=True,penalize_edge_threshold=False, stop_at_edge=True):
         self.g = 9.82  # gravity
         self.m_c = 0.5  # cart mass
         self.m_p = 0.5  # pendulum mass
@@ -43,6 +43,7 @@ class CartPoleSwingUpEnv(gym.Env):
         
         self.sparse_theta_threshold = 1
         self.sparse_reward = sparse_reward
+        self.stop_at_edge=stop_at_edge
 
         high = np.array([
             np.finfo(np.float32).max,
@@ -84,7 +85,13 @@ class CartPoleSwingUpEnv(gym.Env):
 
         done = False
         if  x < -self.x_threshold or x > self.x_threshold:
-          done = True
+            if self.stop_at_edge:
+                if x < 0:
+                    self.state = (-self.x_threshold, 0, theta, thetadot)
+                if x > 0:
+                    self.state = (self.x_threshold, 0, theta, thetadot)
+            else:
+                done = True
         if self.penalize_edge_threshold==True:
             if x < -self.x_threshold + self.edge_threshold or x > self.x_threshold - self.edge_threshold:
                 reward = -10
